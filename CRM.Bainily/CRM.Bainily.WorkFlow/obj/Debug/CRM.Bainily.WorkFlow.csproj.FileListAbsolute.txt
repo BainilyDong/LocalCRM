@@ -1,0 +1,10 @@
+E:\CRM\CRM.Bainily\CRM.Bainily.WorkFlow\bin\Debug\CRM.Bainily.WorkFlow.dll
+E:\CRM\CRM.Bainily\CRM.Bainily.WorkFlow\bin\Debug\CRM.Bainily.WorkFlow.pdb
+E:\CRM\CRM.Bainily\CRM.Bainily.WorkFlow\bin\Debug\Microsoft.Xrm.Sdk.dll
+E:\CRM\CRM.Bainily\CRM.Bainily.WorkFlow\bin\Debug\Microsoft.Xrm.Sdk.Workflow.dll
+E:\CRM\CRM.Bainily\CRM.Bainily.WorkFlow\obj\Debug\CRM.Bainily.WorkFlow.csproj.CoreCompileInputs.cache
+E:\CRM\CRM.Bainily\CRM.Bainily.WorkFlow\obj\Debug\CRM.Bainily.WorkFlow.csproj.CopyComplete
+E:\CRM\CRM.Bainily\CRM.Bainily.WorkFlow\obj\Debug\CRM.Bainily.WorkFlow.dll
+E:\CRM\CRM.Bainily\CRM.Bainily.WorkFlow\obj\Debug\CRM.Bainily.WorkFlow.pdb
+E:\CRM\CRM.Bainily\bin\CRM.Bainily.WorkFlow.dll
+E:\CRM\CRM.Bainily\bin\CRM.Bainily.WorkFlow.pdb

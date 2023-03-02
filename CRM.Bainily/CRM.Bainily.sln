@@ -1,0 +1,93 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CRM.Bainily.Plugin", "CRM.Bainily.Plugin", "{AD7E0C5C-8B2C-49D0-A71A-1CCCFB7B7337}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRM.Bainily.Plugin.SalesOrder", "CRM.Bainily.Plugin.SalesOrder\CRM.Bainily.Plugin.SalesOrder.csproj", "{630C83A4-2422-4F1C-B955-BC67ECC48F90}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CRM.Bainily.Web", "CRM.Bainily.Web", "{E6D88A00-6DD1-42E4-933F-E61987C5EF31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRM.Bainily.Web", "CRM.Bainily.Web\CRM.Bainily.Web.csproj", "{0B934945-548A-44C6-9F23-117716AD2FF8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CRM.Bainily.WorkFlow", "CRM.Bainily.WorkFlow", "{55542021-5478-4C44-BC9E-EB62F46605F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRM.Bainily.WorkFlow", "CRM.Bainily.WorkFlow\CRM.Bainily.WorkFlow.csproj", "{E63978CC-6DE8-41FD-8B01-95EB1B390415}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CRM.Bainily.WebSite(1)", "CRM.Bainily.WebSite\", "{0646F49B-CFD0-48A0-BCB6-7688F1B1025C}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.2"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_63274"
+		Debug.AspNetCompiler.PhysicalPath = "CRM.Bainily.WebSite\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_63274\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_63274"
+		Release.AspNetCompiler.PhysicalPath = "CRM.Bainily.WebSite\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_63274\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "63274"
+		SlnRelativePath = "CRM.Bainily.WebSite\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CRM.Bainily.Common", "CRM.Bainily.Common", "{F629B177-B42A-4AA3-BDCC-03AAECFB3FFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRM.Core", "CRM.Core\CRM.Core.csproj", "{877484F5-E2E3-4838-8272-78E4B073F717}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CRM.Bainily.WebApi", "CRM.Bainily.WebApi", "{95F0CFAD-4B84-45C3-B4F3-F2D1A2DFC58D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRM.Bainily.WebApiSite", "CRM.Bainily.WebApiSite\CRM.Bainily.WebApiSite.csproj", "{A18E2948-5F2C-4E7B-BD89-AE9DCFE7D04F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{630C83A4-2422-4F1C-B955-BC67ECC48F90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{630C83A4-2422-4F1C-B955-BC67ECC48F90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{630C83A4-2422-4F1C-B955-BC67ECC48F90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{630C83A4-2422-4F1C-B955-BC67ECC48F90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B934945-548A-44C6-9F23-117716AD2FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B934945-548A-44C6-9F23-117716AD2FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B934945-548A-44C6-9F23-117716AD2FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B934945-548A-44C6-9F23-117716AD2FF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E63978CC-6DE8-41FD-8B01-95EB1B390415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E63978CC-6DE8-41FD-8B01-95EB1B390415}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E63978CC-6DE8-41FD-8B01-95EB1B390415}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E63978CC-6DE8-41FD-8B01-95EB1B390415}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0646F49B-CFD0-48A0-BCB6-7688F1B1025C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0646F49B-CFD0-48A0-BCB6-7688F1B1025C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0646F49B-CFD0-48A0-BCB6-7688F1B1025C}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{0646F49B-CFD0-48A0-BCB6-7688F1B1025C}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{877484F5-E2E3-4838-8272-78E4B073F717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{877484F5-E2E3-4838-8272-78E4B073F717}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{877484F5-E2E3-4838-8272-78E4B073F717}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{877484F5-E2E3-4838-8272-78E4B073F717}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A18E2948-5F2C-4E7B-BD89-AE9DCFE7D04F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A18E2948-5F2C-4E7B-BD89-AE9DCFE7D04F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A18E2948-5F2C-4E7B-BD89-AE9DCFE7D04F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A18E2948-5F2C-4E7B-BD89-AE9DCFE7D04F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{630C83A4-2422-4F1C-B955-BC67ECC48F90} = {AD7E0C5C-8B2C-49D0-A71A-1CCCFB7B7337}
+		{0B934945-548A-44C6-9F23-117716AD2FF8} = {E6D88A00-6DD1-42E4-933F-E61987C5EF31}
+		{E63978CC-6DE8-41FD-8B01-95EB1B390415} = {55542021-5478-4C44-BC9E-EB62F46605F3}
+		{0646F49B-CFD0-48A0-BCB6-7688F1B1025C} = {E6D88A00-6DD1-42E4-933F-E61987C5EF31}
+		{877484F5-E2E3-4838-8272-78E4B073F717} = {F629B177-B42A-4AA3-BDCC-03AAECFB3FFF}
+		{A18E2948-5F2C-4E7B-BD89-AE9DCFE7D04F} = {95F0CFAD-4B84-45C3-B4F3-F2D1A2DFC58D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0FBA41FD-CF30-44FB-B56A-4935D0325F8E}
+	EndGlobalSection
+EndGlobal

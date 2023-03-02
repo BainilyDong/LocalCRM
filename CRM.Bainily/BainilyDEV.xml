@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="gb2312" ?>
+<CRMExtensionConfig description="">
+	<ConfigList description="CRM连接字符串">
+		<LogPath description="该程序日志保存路径"></LogPath>
+		<!--CRM信息：组织服务URL-->
+		<OrganizationUri description ="CRM组织服务地址">https://bainilydev.crm.com/XRMServices/2011/Organization.svc</OrganizationUri>
+		<DiscoveryUri description ="CRM发现服务地址">https://bainilydev.crm.com/XRMServices/2011/Discovery.svc</DiscoveryUri>
+		<!--CRM信息：WebAPI URL，IFDWebApiUri 和 ADWebApiUri只能二选一，IFD优先，用不上请清空配置内容 
+		<IFDWebApiUri description ="IFD WebAPI 地址">https://demo.xcrm.cn:446/</IFDWebApiUri>-->
+		<ADWebApiUri description ="AD WebAPI 地址">http://bainilydev.crm.com:5555/bainilydev/</ADWebApiUri>
+		<UserName description ="CRM登录名称">crmadmin</UserName>
+		<Domain description="域名">bainily</Domain>
+		<PassWord description="密码">P@ssw0rd</PassWord>
+		<IFD description="IFD模式">true</IFD>
+		<!--通过Dapper访问DB-->
+		<DapperDB description="CRM数据库地址">server=192.168.0.103;uid=sa;pwd={0};database=BainilyDEV_MSCRM;Max Pool Size=1000;</DapperDB>
+		<DapperDB_PWD description="密码">P@ssw0rd</DapperDB_PWD>
+		<!--SQL数据库信息-->
+		<CrmDbCon description="CRM数据库地址">server=192.168.0.103;uid=sa;pwd={0};database={1};Max Pool Size=1000;</CrmDbCon>
+		<CrmDbConDefault description="默认连接DB">BainilyDEV_MSCRM</CrmDbConDefault>
+		<CrmDbConPassword description="连接密码">P@ssw0rd</CrmDbConPassword>
+		<MsDbCon description="任务计划部署连接地址">192.168.0.103;uid=sa;pwd={0};database={1};Max Pool Size=1000;</MsDbCon>
+		<MsDbConPassword description="连接密码">P@ssw0rd</MsDbConPassword>
+		<DbConTime description="连接时间">300</DbConTime>
+		<!--smtp邮件发送信息-->
+		<MailSmtpServer description="Smtp邮件服务器"></MailSmtpServer>
+		<MailFrom description="发送邮件地址"></MailFrom>
+		<MailUser description="发送邮件账号"></MailUser>
+		<MailPassWord description="发送邮件密码"></MailPassWord>
+	</ConfigList>
+</CRMExtensionConfig>

@@ -1,0 +1,338 @@
+﻿<html>
+<head>
+</head>
+<body onfocusout="parent.setEmailRange();" style="overflow-wrap: break-word;">
+    ﻿
+
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/element.css">
+    <script src="../../ClientGlobalContext.js.aspx"></script>
+    <script src="../common/vue.js"></script>
+    <script src="../js/element.js"></script>
+    <script src="../js/siecrm.js"></script>
+    <script src="../js/axios.min.js"></script>
+
+
+    <div id="app">
+        <el-form label-width="70px" label-position="right">
+            <el-row :gutter="24">
+                <el-col :span="8">
+                    <span>附件类型：</span>
+                    <el-select v-model="attachmentType" clearable="" placeholder="请选择">
+                        <el-option v-for="item in typeOptions" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="16">
+                    <el-form-item label="上传文件" prop="fileName" v-if="isEnable" style="margin-bottom: 0 !important;">
+                        <el-upload class="upload-demo" ref="upload" action="" :multiple="false" :show-file-list="false" :http-request="httpRequest" :on-change="handleFileChange" style="float:left">
+                            <el-button slot="trigger" type="primary" size="medium" plain="">选取文件</el-button>
+                            <!--<el-progress style="width: 200px;margin-top: 8px" :percentage="progressPercent" />-->
+                        </el-upload>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-form>
+        <div>
+            <el-table :data="tableData" ref="table">
+                <el-table-column label="文件名" prop="name"></el-table-column>
+                <el-table-column label="附件类型" prop="type"></el-table-column>
+                <el-table-column label="备注" prop="desc">
+                    <template slot-scope="scope">
+                        <el-input v-model="scope.row.desc" type="text" @focus="onInputFocus(scope.row)"></el-input>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <a href="#" @click="preView(scope.row)">预览</a>
+                        <a v-if="isDown" :href="scope.row.downUrl" target="_blank">下载</a>
+                        <a v-if="isEnable" href="#" @click="delAttachment(scope.row)">删除</a>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+    </div>
+
+
+    <script>
+        var app = new Vue(
+            {
+                el: '#app',
+                data: function () {
+                    return {
+                        url: "",
+                        viewUrl: "",
+                        entityName: "",
+                        entityId: "",
+                        systemUserId: "",
+                        attachmentType: "",
+                        tableData: [],
+                        fileData: null,
+                        fileName: "",
+                        fileList: [],
+                        typeOptions: [],
+                        isEnable: true,
+                        isDown:true,
+                        progressPercent: 0, // 进度条默认为0
+                    }
+                },
+                mounted() {
+                    this.systemUserId = parent.Xrm.Page.context.getUserId().replace("{", "").replace("}", "");
+                    this.entityName = parent.Xrm.Page.data.entity.getEntityName();
+                    this.entityId = parent.Xrm.Page.data.entity.getId().replace("{", "").replace("}", "");
+                    this.checkEnable();
+                    this.getUrl();
+                    this.getAttachment();
+                    this.getAttachmentTypeList();
+                },
+                methods: {
+                    checkEnable() {
+                        //市场活动：活动状态 为 已完成，不允许操作
+                        if (this.entityName == "campaign") {
+                            if (parent.Xrm.Page.getAttribute('new_active_state')) {
+                                var active_state = parent.Xrm.Page.getAttribute('new_active_state').getValue();
+                                if (active_state == 2) {
+                                    this.isEnable = false;
+                                }
+                            }
+                        }
+                        //销售活动：活动状态 为 已完成，不允许操作
+                        if (this.entityName == "new_salesactivities") {
+                            if (parent.Xrm.Page.getAttribute('new_salesstate')) {
+                                var salesstate = parent.Xrm.Page.getAttribute('new_salesstate').getValue();
+                                if (salesstate == 20) {
+                                    this.isEnable = false;
+                                }
+                            }
+                        }
+                        //资料库：只允许“资料库管理员”或“系统管理员”删除
+                        if (this.entityName == "new_databank") {
+                            var isRole = siecrm.isUserHasRoles(this.systemUserId, "系统管理员,资料库管理员");
+                            if (!isRole) {
+                                this.isEnable = false;
+                            }
+                        }
+                        if (parent.Xrm.Page.getAttribute('new_approvalstatus')) {
+                            var approvalstatus = parent.Xrm.Page.getAttribute('new_approvalstatus').getValue();
+                            if (approvalstatus == 2 || approvalstatus == 3) {
+                                this.isEnable = false;
+                            }
+                        }
+                        if (this.entityName == "new_technicalapply" || this.entityName == "new_agreementapply") {
+                            this.isEnable = false;
+                            this.isDown = false;
+                        }
+                    },
+                    getUrl() {
+                        this.url = siecrm.getParameterValue("webApiURL");
+                        this.viewUrl = siecrm.getParameterValue("viewDocUrl");
+                    },
+                    httpRequest(param) {
+                        let fileObj = param.file; // 相当于input里取得的files
+                        this.fileName = fileObj.name;
+                        this.fileData = fileObj;
+
+                        this.submitUpload();
+                        /*this.$emit("upload", formData);*/
+                    },
+                    handleFileChange(file, fileList) {
+                        this.beforeUpload(file);
+                        if (fileList.length > 0) {
+                            this.fileList = [fileList[fileList.length - 1]]; // 这一步，是 展示最后一次选择的dat文件
+                        }
+                    },
+                    beforeUpload(file) {
+                        console.log(file);
+                        this.fileData = file;
+                        this.fileName = file.name;
+                    },
+                    submitUpload() {
+                        this.entityId = parent.Xrm.Page.data.entity.getId().replace("{", "").replace("}", "");
+                        if (this.entityId == "" || this.entityId == null) {
+                            alert("请先保存数据，再提交附件！");
+                            return;
+                        }
+                        if (this.fileData == null) {
+                            alert("请先添加附件在进行上传！");
+                            return;
+                        }
+                        let formData = new FormData();
+                        formData.append("file", this.fileData);
+
+                        //【资料库】、【投标文件申请】不限制
+                        if (this.entityName != "new_databank" && this.entityName != "new_tenderfileapply") {
+                            if (this.fileData.size > 1024 * 1024 * 100) {
+                                alert("上传文件最大不超 100M！");
+                                return;
+                            }
+                        }
+
+                        if (!this.url) {
+                            alert("未查询到系统参数webApiURL!");
+                            return;
+                        }
+                        if (this.attachmentType == null || this.attachmentType == "" || this.attachmentType == undefined) {
+                            alert("请选择附件类型!");
+                            return;
+                        }
+                        // 上传新文件时，将进度条值置为零
+                        this.progressPercent = 0;
+                        // 进度条
+                        const uploadProgressEvent = progressEvent => {
+                            this.progressPercent = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+                        }
+
+                        var requestUrl = this.url + '/api/file/UploadImageFile?entityName=' + this.entityName + '&recordGid=' + this.entityId + '&userId=' + this.systemUserId + '&type=' + this.attachmentType;
+
+                        siecrm.showLoading("附件提交中，请耐心等待");
+                        var that = this;
+                        axios({
+                            method: 'post',
+                            url: requestUrl,
+                            data: formData,
+                            onUploadProgress: (progressEvent) => {
+                                this.progressPercent = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+                            }
+                        }).then(res => {
+                            console.log(res);
+                            if (res.status == 200) {
+                                that.getAttachment();
+                                alert("上传成功");
+                            } else {
+                                alert(res.response.data.message);
+                            }
+                            siecrm.closeLoading();
+                        })
+                    },
+                    //获取附件记录
+                    getAttachment() {
+                        this.tableData = [];
+                        var fetchXml = "<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>\
+                                                  <entity name='sie_doccenterattachment'>\
+                                                    <attribute name='sie_doccenterattachmentid' />\
+                                                    <attribute name='sie_name' />\
+                                                    <attribute name='sie_desc' />\
+                                                    <attribute name='sie_type' />\
+                                                    <attribute name='sie_fileid' />\
+                                                    <order attribute='createdon' descending='true' />\
+                                                    <filter type='and'>\
+                                                      <condition attribute='statecode' operator='eq' value='0' />\
+                                                      <condition attribute='sie_entityname' operator='eq' value='"+ this.entityName + "' />\
+                                                      <condition attribute='sie_recordid' operator='eq' value='"+ this.entityId + "' />\
+                                                    </filter>\
+                                                  </entity>\
+</fetch>";
+                        var ec = siecrm.fetch("sie_doccenterattachments", fetchXml, true, true);
+                        if (ec.length < 1) {
+                            this.tableData = [];
+                        }
+                        for (var i in ec) {
+                            if (this.entityName == "new_technicalapply" || this.entityName == "new_agreementapply") {
+                                var info = {
+                                    name: ec[i].sie_name,
+                                    type: ec[i]["sie_type@OData.Community.Display.V1.FormattedValue"],
+                                    desc: ec[i].sie_desc,
+                                    recordid: ec[i].sie_doccenterattachmentid,
+                                    downUrl: "",
+                                    viewUrl: ec[i].sie_fileid
+                                };
+                                this.tableData.push(info);
+                            } else {
+                                var info = {
+                                    name: ec[i].sie_name,
+                                    type: ec[i]["sie_type@OData.Community.Display.V1.FormattedValue"],
+                                    desc: ec[i].sie_desc,
+                                    recordid: ec[i].sie_doccenterattachmentid,
+                                    downUrl: this.url + "/api/file/DownImageFile?fileid=" + ec[i].sie_doccenterattachmentid + '&userId=' + this.systemUserId,
+                                    viewUrl: this.viewUrl + ec[i].sie_fileid
+                                };
+                                this.tableData.push(info);
+                            }
+                        }
+                    },
+                    //输入框失去焦点事件
+                    onInputFocus(row) {
+                        //console.log(row);
+                        var entity = {};
+                        entity["sie_desc"] = row.desc;
+                        console.log(entity);
+                        siecrm.update("sie_doccenterattachments", row.recordid, entity);
+                    },
+                    //停用记录
+                    delAttachment(row) {
+                        console.log(row);
+                        //siecrm.delete("sie_doccenterattachments", row.recordid);
+                        var entity = {};
+                        entity["statecode"] = 1;//"状态"变更为"停用"
+                        siecrm.update("sie_doccenterattachments", row.recordid, entity);
+                        alert("删除成功！");
+                        this.getAttachment();
+                    },
+                    //获取下拉选项
+                    getAttachmentTypeList() {
+                        var condition = "";
+                        var approvlstatus = -1;
+                        if (parent.Xrm.Page.getAttribute('new_approvalstatus')) {
+                            var approvlstatus = parent.Xrm.Page.getAttribute('new_approvalstatus').getValue();
+                        }
+                        if ((this.entityName == "new_tmcontractapply" || this.entityName == "new_mkcontractapply") && (approvlstatus == 1 || approvlstatus == 4)) {
+                            condition = "<filter type='and'>\
+<condition attribute='new_type' operator='in'>\
+                                    <value>7</value>\
+                                    <value>8</value>\
+                                  </condition>\
+                                                    </filter >";
+                        }
+                        var fetchXml = "<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>\
+                                                  <entity name='new_attachmentconfiguration'>\
+                                                    <attribute name='new_attachmentconfigurationid' />\
+                                                    <attribute name='new_type' />\
+                                                    <filter type='and'>\
+                                                      <condition attribute='new_entityname' operator='eq' value='"+ this.entityName + "' />"
+                            + condition +
+                                                    "</filter>\
+                                                  </entity>\
+</fetch>";
+                        var ec = siecrm.fetch("new_attachmentconfigurations", fetchXml, true);
+                        if (ec.length < 1) {
+                            var info = { label: "通用", value: 99 };
+                            this.typeOptions.push(info);
+                        }
+                        for (var i in ec) {
+                            var info = { label: ec[i]["new_type@OData.Community.Display.V1.FormattedValue"], value: ec[i].new_type };
+                            this.typeOptions.push(info);
+                        }
+                        if (this.typeOptions.length == 1) {
+                            this.attachmentType = this.typeOptions[0].value;
+                        }
+                    },
+                    /*
+                    * 格式化文件大小显示
+                    * value : file文件的大小值
+                    * */
+                    formateSize: function (value) {
+                        if (null == value || value == '') {
+                            return "0 Bytes";
+                        }
+                        var unitArr = new Array("Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
+                        var index = 0;
+                        var srcsize = parseFloat(value);
+                        index = Math.floor(Math.log(srcsize) / Math.log(1024));
+                        var size = srcsize / Math.pow(1024, index);
+                        size = size.toFixed(2);//保留的小数位数
+                        return size + unitArr[index];
+                    },
+                    //预览
+                    preView: function (row) {
+                        if (row.viewUrl) {
+                            window.open(row.viewUrl);
+                        }
+                    }
+                },
+            }
+        );
+    </script>
+
+</body>
+</html>

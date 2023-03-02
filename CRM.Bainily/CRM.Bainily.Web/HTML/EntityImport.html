@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>实体信息导入</title>
+    <script src="../../new_/js/common/jquery.min.js"></script>
+    <script src="../../new_/js/common/vue2.6.14.js"></script>
+    <script src="../../new_/js/common/element.js"></script>
+    <script src="../../new_/js/common/xlsx.core.min.js"></script>
+    <script src="../../new_/js/common/axios.min.js"></script>
+    <script src="../../new_/js/common/ClientGlobalContext.js"></script>
+    <script src="../../new_/js/siecrm.min.js"></script>
+    <link href="../../new_/css/common/element.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <el-container>
+            <el-main>
+                <el-form ref="form">
+                    <el-row>
+                        <el-col :span="16">
+                            <el-input placeholder="请选择文件"
+                                      v-model="filefullname"
+                                      :disabled="true">
+                            </el-input>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-button type="success" plain icon="el-icon-upload" @click="UploadFun">上传</el-button>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="24">
+                            <el-upload class="upload-demo"
+                                       drag
+                                       :show-file-list="false"
+                                       :http-request="HttpRequest">
+                                <i class="el-icon-upload"></i>
+                                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                                <div class="el-upload__tip" slot="tip">只能上传.xls/.xlsx文件！</div>
+                            </el-upload>
+                        </el-col>
+                    </el-row>
+                </el-form>
+                <div id="exceltable"></div>
+            </el-main>
+        </el-container>
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                filepath: '',
+                filefullname: '',
+                execldata: [],
+                data: {},
+            },
+            //最先执行，初始化data值
+            //created: {
+            //},
+            //渲染html时执行
+            //computed() {
+            //},
+            //页面渲染完成执行
+            mounted() {
+            },
+            //方法
+            methods: {
+                ChoseFile: function (file) {
+                    let files = document.getElementById('filebtn').files;
+                    if (files.length <= 0) {
+                        return;
+                    }
+                    if (true) {
+
+                    }
+                },
+                //操作上传数据
+                HttpRequest: function (files) {
+                    //清空显示表格
+                    document.getElementById("exceltable").innerHTML = "";
+                    if (files.file == null) {
+                        this.$message.error('文件错误！');
+                        return;
+                    }
+                    //文件全名（带后缀）
+                    var filefullname = files.file.name;
+                    if (filefullname.indexOf('.') == -1) {
+                        this.$message.error('文件文件格式错误！');
+                        return;
+                    }
+                    //文件名称
+                    var filename = filefullname.substring(0, filefullname.lastIndexOf('.'));
+                    //文件类型
+                    var filesuffix = filefullname.substring(filefullname.lastIndexOf('.') + 1, filefullname.length);
+                    var filetype = ['xls', 'xlsx'];
+                    if (filetype.indexOf(filesuffix) == -1) {
+                        this.$message({
+                            type: 'warning',
+                            showClose: true,
+                            message: '只能上传.xls/.xlsx文件！'
+                        });
+                        return;
+                    }
+                    //显示名称
+                    this.filefullname = filefullname;
+                    //文件数据
+                    var filedata = files.file;
+                    this.data = filedata;
+                    //下面this会指向reader.onload = e => {}
+                    var that = this;
+                    const reader = new FileReader(filedata);
+                    reader.onload = function (e) {
+                        const data = e.target.result;
+                        const workbook = XLSX.read(data, {
+                            type: 'binary'
+                        })
+                        for (var i = 0; i < workbook.SheetNames.length; i++) {
+                            const wsname = workbook.SheetNames[i]// 取第一张表
+                            const ws = XLSX.utils.sheet_to_json(workbook.Sheets[wsname])// 生成json表格内容
+                            that.ExcelToTable(ws, wsname);
+                        }
+                    }
+                    reader.readAsBinaryString(filedata);
+                },
+                //把excel数据转为table显示出来
+                ExcelToTable: function (exceldata, sheetname) {
+                    var datas = exceldata;
+                    var buildtbstr = '<table style="width: 100%;border:1px solid black;margin-top:10px;" cellpadding="0" cellspacing="0"><caption style="text-align:left;font-size:xx-large;">' + sheetname + '</caption>';
+                    if (datas.length > 0) {
+                        for (var i = 0; i < exceldata.length; i++) {
+                            if (i == 0) {
+                                //第一行设置标题
+                                let buildtrstr = '<tr>';
+                                for (let key in exceldata[i]) {
+                                    buildtrstr += '<td style = "white-space: nowrap;">' + key + '</td>';
+                                }
+                                buildtrstr += '</tr>';
+                                buildtbstr += buildtrstr;
+                            }
+                            let buildtrstr = '<tr>';
+                            for (let key in exceldata[i]) {
+                                buildtrstr += '<td style = "white-space: nowrap;">' + exceldata[i][key] + '</td>';
+                            }
+                            buildtrstr += '</tr>'
+                            buildtbstr += buildtrstr;
+                        }
+                    }
+                    buildtbstr += '</table>';
+                    document.getElementById("exceltable").innerHTML += buildtbstr;
+                },
+                //上传文件
+                UploadFun: function () {
+                    /* FormData 是表单数据类 */
+                    //不能直接将文件流传到后端，要用formdata包裹
+                    var fd = new FormData();
+                    fd.append("file", this.data);
+                    axios({
+                        method: 'post',
+                        url: 'https://bainilydev.crm.com:9091/api/file/FileUpload',
+                        data: fd,
+                        params: {
+                            id: "1",
+                            name: "A"
+                        }
+                    }).then(res => {
+                        alert(res.data);
+                    });
+                },
+            }
+        });
+    </script>
+</body>
+</html>

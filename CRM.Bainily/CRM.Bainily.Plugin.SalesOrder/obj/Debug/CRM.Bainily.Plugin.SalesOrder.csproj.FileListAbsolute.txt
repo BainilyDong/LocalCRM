@@ -1,0 +1,10 @@
+E:\CRM\CRM.Bainily\CRM.Bainily.Plugin.SalesOrder\bin\Debug\CRM.Bainily.Plugin.SalesOrder.dll
+E:\CRM\CRM.Bainily\CRM.Bainily.Plugin.SalesOrder\bin\Debug\CRM.Bainily.Plugin.SalesOrder.pdb
+E:\CRM\CRM.Bainily\CRM.Bainily.Plugin.SalesOrder\bin\Debug\Microsoft.Xrm.Sdk.dll
+E:\CRM\CRM.Bainily\CRM.Bainily.Plugin.SalesOrder\obj\Debug\CRM.Bainily.Plugin.SalesOrder.csproj.CoreCompileInputs.cache
+E:\CRM\CRM.Bainily\CRM.Bainily.Plugin.SalesOrder\obj\Debug\CRM.Bainily.Plugin.SalesOrder.csproj.CopyComplete
+E:\CRM\CRM.Bainily\CRM.Bainily.Plugin.SalesOrder\obj\Debug\CRM.Bainily.Plugin.SalesOrder.dll
+E:\CRM\CRM.Bainily\CRM.Bainily.Plugin.SalesOrder\obj\Debug\CRM.Bainily.Plugin.SalesOrder.pdb
+E:\CRM\CRM.Bainily\bin\CRM.Bainily.Plugin.SalesOrder.dll
+E:\CRM\CRM.Bainily\bin\CRM.Bainily.Plugin.SalesOrder.pdb
+E:\CRM\CRM.Bainily\CRM.Bainily.Plugin.SalesOrder\obj\Debug\CRM.Bainily.Plugin.SalesOrder.csproj.AssemblyReference.cache

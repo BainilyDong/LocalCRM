@@ -1,0 +1,7 @@
+E:\CRM\CRM.Bainily\CRM.Core\obj\Debug\CRM.Core.csproj.CoreCompileInputs.cache
+E:\CRM\CRM.Bainily\bin\CRM.Core.dll
+E:\CRM\CRM.Bainily\bin\CRM.Core.pdb
+E:\CRM\CRM.Bainily\CRM.Core\obj\Debug\CRM.Core.csproj.CopyComplete
+E:\CRM\CRM.Bainily\CRM.Core\obj\Debug\CRM.Core.dll
+E:\CRM\CRM.Bainily\CRM.Core\obj\Debug\CRM.Core.pdb
+E:\CRM\CRM.Bainily\CRM.Core\obj\Debug\CRM.Core.csproj.AssemblyReference.cache
